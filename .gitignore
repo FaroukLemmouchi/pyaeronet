@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+<<<<<<< HEAD
+# 
+data/
+=======
+>>>>>>> 42387658be6daaed74e1ef1517108f43e5b57c16
 # C extensions
 *.so
 

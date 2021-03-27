@@ -1,16 +1,8 @@
 #!/bin/python3
-#Developped by farouk.lemmouchi@lisa.ipsl.fr (2021)
 
-<<<<<<< HEAD
 import os
 __db_path__ = os.getenv('aeronet_db_path')
 __verbose__ = 1
-=======
-#import os
-#__db_path__ = os.getenv('aeronet_db_path')
-__verbose__ = 1
-__db_path__ = "./data" 
->>>>>>> 42387658be6daaed74e1ef1517108f43e5b57c16
 
 from glob import glob as _glob
 if _glob(__db_path__) == [] :
@@ -34,8 +26,8 @@ class site :
 
   def get_site_name(self, pixlon, pixlat, nearby):
     """Returns the site name if located {nearby} degree from {lon}, {lat}"""
-    a=(self.data.Longitude - float(pixlon))**2 < nearby
-    b=(self.data.Latitude - float(pixlat))**2 < nearby
+    a=(self.data['Longitude(decimal_degrees)'] - float(pixlon))**2 < nearby
+    b=(self.data['Latitude(decimal_degrees)'] - float(pixlat))**2 < nearby
     c= a & b
 
     res = self.data[c]
@@ -106,7 +98,6 @@ class product :
 
   def _check_day_availability(self, day, month):
     try :
-      #a = (self.data.iloc[:,1] == f'{day}:{month}:{self.__year__}')
       a = (self.data['Date(dd:mm:yyyy)'] == f'{day}:{month}:{self.__year__}')
       if not a.any() :
         if __verbose__ : print(f'{self.__product_filename__} day not recorded, using default')
