@@ -237,7 +237,7 @@ class product :
     """Reads AERONET AOD file
        Return : AOD value at any particular wavelength using alpha as Angstrom coefficient
     """ 
-    from pyaeronet import convert_aod_wv
+    from pyaeronet.utils import convert_aod_wv
     import numpy as np
 
     day = str(day) ; month = str(month)
@@ -245,10 +245,10 @@ class product :
     if a is None : return None
 
     try :
-      AOD440 = self.data['AOD_Extinction-Total[440nm]'][int(a)]
+      AOD440 = self.data['AOD_Extinction-Total[440nm]'][a]
       AODwv = convert_aod_wv(AOD440, 440, wv, alpha)
     except :
       AOD443 = self.data['AOD_Extinction-Total[443nm]'][int(a)]
       AODwv = convert_aod_wv(AOD443, 443, wv, alpha)
   
-    return AODwv  #aod at requested lambda
+    return np.float(AODwv)  #aod at requested lambda
