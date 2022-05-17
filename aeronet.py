@@ -100,10 +100,10 @@ class product :
     try :
       a = (self.data['Date(dd:mm:yyyy)'] == f'{day}:{month}:{self.__year__}')
       if not a.any() :
-        if __verbose__ : print(f'{self.__product_filename__} day not recorded, using default')
+        if __verbose__ : print(f'{self.__product_filename__} day not recorded') #, using default')
         return None
     except:
-      if __verbose__ : print( f"{self.__product_filename__} is empty, use default configuration")
+      if __verbose__ : print( f"{self.__product_filename__} is empty") #, use default configuration")
       return None
     return a
 
@@ -233,9 +233,9 @@ class product :
       alpha = - np.log(AOD443/AOD667)/np.log(443/667)
     return  float(alpha)
 
-  def get_AOD(self, day, month, wv, alpha) :
+  def get_AOD(self, day, month, wv) :
     """Reads AERONET AOD file
-       Return : AOD value at any particular wavelength using alpha as Angstrom coefficient
+       Return : AOD value at any wv nm wavelength
     """ 
     from pyaeronet.utils import convert_aod_wv
     import numpy as np
@@ -244,11 +244,13 @@ class product :
     a = self._check_day_availability(day, month)
     if a is None : return None
 
+    alpha = self.data['Extinction_Angstrom_Exponent_440-870nm-Total'][a]
     try :
       AOD440 = self.data['AOD_Extinction-Total[440nm]'][a]
       AODwv = convert_aod_wv(AOD440, 440, wv, alpha)
     except :
-      AOD443 = self.data['AOD_Extinction-Total[443nm]'][int(a)]
+      AOD443 = self.data['AOD_Extinction-Total[443nm]'][a]
       AODwv = convert_aod_wv(AOD443, 443, wv, alpha)
   
     return np.float(AODwv)  #aod at requested lambda
+
